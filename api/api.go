@@ -420,3 +420,15 @@ func Decrypt(ciphertext string, privateKey *ecdsa.PrivateKey) (string, error) {
 	}
 	return string(plaintext), nil
 }
+
+// Decode returns the claims
+func Decode(token string) (jwt.MapClaims, error) {
+	tokenWithoutWhitespace := regexp.MustCompile(`\s*$`).ReplaceAll([]byte(token), []byte{})
+	unverifiedJwt, _, err := new(jwt.Parser).ParseUnverified(string(tokenWithoutWhitespace), jwt.MapClaims{})
+	claims := unverifiedJwt.Claims.(jwt.MapClaims)
+	if err == nil {
+		return claims, nil
+	}
+	return nil, err
+
+}

@@ -20,7 +20,6 @@ import (
 	"os"
 
 	"github.com/immutability-io/secp/api"
-	"github.com/immutability-io/shearline/model"
 	"github.com/spf13/cobra"
 )
 
@@ -51,12 +50,12 @@ var claimCmd = &cobra.Command{
 			fmt.Printf("{\"error\":\"%s\"}\n", err)
 			os.Exit(1)
 		}
-		message, err := model.AsMessage(jwt)
+		message, err := api.Decode(jwt)
 		if err != nil {
 			fmt.Printf("{\"error\":\"%s\"}\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("{\"token\":\"%s\",\"decoded\":%s}\n", jwt, api.PrettyPrint(message.Data()))
+		fmt.Printf("{\"token\":\"%s\",\"decoded\":%s}\n", jwt, api.PrettyPrint(message))
 	},
 }
 
