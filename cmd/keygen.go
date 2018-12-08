@@ -18,8 +18,14 @@ import (
 	"fmt"
 
 	"github.com/immutability-io/secp/api"
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 )
+
+func home() string {
+	home, _ := homedir.Dir()
+	return home
+}
 
 // keygenCmd represents the keygen command
 var keygenCmd = &cobra.Command{
@@ -41,9 +47,8 @@ var keygenCmd = &cobra.Command{
 }
 
 func init() {
-	keygenCmd.PersistentFlags().StringVar(&Path, "path", "", "Path to encrypted keystore")
-	keygenCmd.MarkPersistentFlagRequired("path")
-	keygenCmd.PersistentFlags().StringVar(&Separator, "separator", "-", "The string to use as a separator for the passphrase (defaults to -)")
-	keygenCmd.PersistentFlags().IntVar(&Words, "words", 6, "Number of words to use in passphrase (defaults to 6")
+	keygenCmd.PersistentFlags().StringVar(&Path, "path", home(), "Path to encrypted keystore.")
+	keygenCmd.PersistentFlags().StringVar(&Separator, "separator", "-", "The string to use as a separator for the passphrase.")
+	keygenCmd.PersistentFlags().IntVar(&Words, "words", 6, "Number of words to use in passphrase.")
 	rootCmd.AddCommand(keygenCmd)
 }
